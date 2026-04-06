@@ -4,6 +4,8 @@
 
 > **📥 Download & Install:** [https://drive.google.com/drive/folders/1PKwy-NNBk2pP8_fH0qem-ykTrj_j8l5G?usp=sharing](#)
 
+>> **📥 Architecture Document:** [https://drive.google.com/drive/folders/1bfRkron9FBtBSfc80uyVd6u_33AD3Skr?usp=drive_link](#) 
+
 ---
 
 ## 📖 Project Overview
