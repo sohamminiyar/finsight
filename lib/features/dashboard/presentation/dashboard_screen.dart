@@ -27,7 +27,14 @@ class DashboardScreen extends ConsumerWidget {
       data: (s) => s.currencySymbol,
       orElse: () => '₹',
     );
-    
+    String getGreeting() {
+      final hour = DateTime.now().hour;
+      if (hour >= 5 && hour < 12) return 'Good morning';
+      if (hour >= 12 && hour < 17) return 'Good afternoon';
+      if (hour >= 17 && hour < 22) return 'Good evening';
+      return 'Good night';
+    }
+
     // Responsive Dimensions
     final screenSize = MediaQuery.sizeOf(context);
     final hPadding = screenSize.width * 0.06; // 6% of width for consistent margins
@@ -48,12 +55,22 @@ class DashboardScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 8),
-                    Text(
-                      'Good morning, Julian',
-                      style: AppTextStyles.headlineSmall(context).copyWith(
-                        color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                    settingsAsync.maybeWhen(
+                      data: (settings) => Text(
+                        '${getGreeting()}, ${settings.userName}',
+                        style: AppTextStyles.headlineSmall(context).copyWith(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      orElse: () => Text(
+                        '${getGreeting()}, User',
+                        style: AppTextStyles.headlineSmall(context).copyWith(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ],

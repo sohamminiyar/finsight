@@ -21,6 +21,7 @@ ProfileSettings _$ProfileSettingsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProfileSettings {
+  String get userName => throw _privateConstructorUsedError;
   double get dailySpendingLimit => throw _privateConstructorUsedError;
   double get monthlySavingsTarget => throw _privateConstructorUsedError;
   int get streakTargetDays => throw _privateConstructorUsedError;
@@ -47,6 +48,7 @@ abstract class $ProfileSettingsCopyWith<$Res> {
   ) = _$ProfileSettingsCopyWithImpl<$Res, ProfileSettings>;
   @useResult
   $Res call({
+    String userName,
     double dailySpendingLimit,
     double monthlySavingsTarget,
     int streakTargetDays,
@@ -72,6 +74,7 @@ class _$ProfileSettingsCopyWithImpl<$Res, $Val extends ProfileSettings>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userName = null,
     Object? dailySpendingLimit = null,
     Object? monthlySavingsTarget = null,
     Object? streakTargetDays = null,
@@ -82,6 +85,10 @@ class _$ProfileSettingsCopyWithImpl<$Res, $Val extends ProfileSettings>
   }) {
     return _then(
       _value.copyWith(
+            userName: null == userName
+                ? _value.userName
+                : userName // ignore: cast_nullable_to_non_nullable
+                      as String,
             dailySpendingLimit: null == dailySpendingLimit
                 ? _value.dailySpendingLimit
                 : dailySpendingLimit // ignore: cast_nullable_to_non_nullable
@@ -126,6 +133,7 @@ abstract class _$$ProfileSettingsImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
+    String userName,
     double dailySpendingLimit,
     double monthlySavingsTarget,
     int streakTargetDays,
@@ -150,6 +158,7 @@ class __$$ProfileSettingsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userName = null,
     Object? dailySpendingLimit = null,
     Object? monthlySavingsTarget = null,
     Object? streakTargetDays = null,
@@ -160,6 +169,10 @@ class __$$ProfileSettingsImplCopyWithImpl<$Res>
   }) {
     return _then(
       _$ProfileSettingsImpl(
+        userName: null == userName
+            ? _value.userName
+            : userName // ignore: cast_nullable_to_non_nullable
+                  as String,
         dailySpendingLimit: null == dailySpendingLimit
             ? _value.dailySpendingLimit
             : dailySpendingLimit // ignore: cast_nullable_to_non_nullable
@@ -197,6 +210,7 @@ class __$$ProfileSettingsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ProfileSettingsImpl implements _ProfileSettings {
   const _$ProfileSettingsImpl({
+    this.userName = 'Soham',
     this.dailySpendingLimit = 2500.0,
     this.monthlySavingsTarget = 5000.0,
     this.streakTargetDays = 12,
@@ -209,6 +223,9 @@ class _$ProfileSettingsImpl implements _ProfileSettings {
   factory _$ProfileSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProfileSettingsImplFromJson(json);
 
+  @override
+  @JsonKey()
+  final String userName;
   @override
   @JsonKey()
   final double dailySpendingLimit;
@@ -233,7 +250,7 @@ class _$ProfileSettingsImpl implements _ProfileSettings {
 
   @override
   String toString() {
-    return 'ProfileSettings(dailySpendingLimit: $dailySpendingLimit, monthlySavingsTarget: $monthlySavingsTarget, streakTargetDays: $streakTargetDays, currencyCode: $currencyCode, currencySymbol: $currencySymbol, isDarkMode: $isDarkMode, isBiometricEnabled: $isBiometricEnabled)';
+    return 'ProfileSettings(userName: $userName, dailySpendingLimit: $dailySpendingLimit, monthlySavingsTarget: $monthlySavingsTarget, streakTargetDays: $streakTargetDays, currencyCode: $currencyCode, currencySymbol: $currencySymbol, isDarkMode: $isDarkMode, isBiometricEnabled: $isBiometricEnabled)';
   }
 
   @override
@@ -241,6 +258,8 @@ class _$ProfileSettingsImpl implements _ProfileSettings {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProfileSettingsImpl &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
             (identical(other.dailySpendingLimit, dailySpendingLimit) ||
                 other.dailySpendingLimit == dailySpendingLimit) &&
             (identical(other.monthlySavingsTarget, monthlySavingsTarget) ||
@@ -261,6 +280,7 @@ class _$ProfileSettingsImpl implements _ProfileSettings {
   @override
   int get hashCode => Object.hash(
     runtimeType,
+    userName,
     dailySpendingLimit,
     monthlySavingsTarget,
     streakTargetDays,
@@ -289,6 +309,7 @@ class _$ProfileSettingsImpl implements _ProfileSettings {
 
 abstract class _ProfileSettings implements ProfileSettings {
   const factory _ProfileSettings({
+    final String userName,
     final double dailySpendingLimit,
     final double monthlySavingsTarget,
     final int streakTargetDays,
@@ -301,6 +322,8 @@ abstract class _ProfileSettings implements ProfileSettings {
   factory _ProfileSettings.fromJson(Map<String, dynamic> json) =
       _$ProfileSettingsImpl.fromJson;
 
+  @override
+  String get userName;
   @override
   double get dailySpendingLimit;
   @override

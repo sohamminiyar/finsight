@@ -6,7 +6,7 @@ part of 'alert_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$smartAlertsHash() => r'e0b2614cc0de56ccd9b0f19790ce440753edb183';
+String _$smartAlertsHash() => r'55ced65f312bbf028d9315b9acfe11fab098887e';
 
 /// See also [smartAlerts].
 @ProviderFor(smartAlerts)

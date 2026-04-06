@@ -9,6 +9,7 @@ part of 'profile_settings.dart';
 _$ProfileSettingsImpl _$$ProfileSettingsImplFromJson(
   Map<String, dynamic> json,
 ) => _$ProfileSettingsImpl(
+  userName: json['userName'] as String? ?? 'Soham',
   dailySpendingLimit:
       (json['dailySpendingLimit'] as num?)?.toDouble() ?? 2500.0,
   monthlySavingsTarget:
@@ -23,6 +24,7 @@ _$ProfileSettingsImpl _$$ProfileSettingsImplFromJson(
 Map<String, dynamic> _$$ProfileSettingsImplToJson(
   _$ProfileSettingsImpl instance,
 ) => <String, dynamic>{
+  'userName': instance.userName,
   'dailySpendingLimit': instance.dailySpendingLimit,
   'monthlySavingsTarget': instance.monthlySavingsTarget,
   'streakTargetDays': instance.streakTargetDays,

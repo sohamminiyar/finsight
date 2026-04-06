@@ -6,6 +6,7 @@ part 'profile_settings.g.dart';
 @freezed
 class ProfileSettings with _$ProfileSettings {
   const factory ProfileSettings({
+    @Default('Soham') String userName,
     @Default(2500.0) double dailySpendingLimit,
     @Default(5000.0) double monthlySavingsTarget,
     @Default(12) int streakTargetDays,

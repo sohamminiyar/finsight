@@ -40,6 +40,11 @@ class ProfileSettingsNotifier extends _$ProfileSettingsNotifier {
     await repository.set(_settingsKey, jsonEncode(newSettings.toJson()));
   }
 
+  Future<void> setUserName(String name) async {
+    final current = state.value ?? const ProfileSettings();
+    await updateSettings(current.copyWith(userName: name));
+  }
+
   Future<void> setDailySpendingLimit(double limit) async {
     final current = state.value ?? const ProfileSettings();
     await updateSettings(current.copyWith(dailySpendingLimit: limit));

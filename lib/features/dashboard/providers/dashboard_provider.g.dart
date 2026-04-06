@@ -6,7 +6,7 @@ part of 'dashboard_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dashboardSummaryHash() => r'a9db3c2d22ccda6d2600c2c2924f77d002e2ab24';
+String _$dashboardSummaryHash() => r'b4e0d0b44d42e87b78f4c542616bda70799953c2';
 
 /// See also [dashboardSummary].
 @ProviderFor(dashboardSummary)
@@ -23,7 +23,7 @@ final dashboardSummaryProvider = FutureProvider<DashboardSummary>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef DashboardSummaryRef = FutureProviderRef<DashboardSummary>;
-String _$spendingTrendHash() => r'944f67df9b0139f82342ff22e168532dcaaff1ae';
+String _$spendingTrendHash() => r'ecc186d262d86c833a985caa0347084e1069ee9d';
 
 /// See also [spendingTrend].
 @ProviderFor(spendingTrend)

@@ -12,6 +12,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:intl/intl.dart';
 import '../domain/models/profile_settings.dart';
 import '../providers/settings_provider.dart';
+import '../../dashboard/providers/dashboard_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -21,86 +22,152 @@ class ProfileScreen extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final hPadding = MediaQuery.sizeOf(context).width * 0.06;
     final settingsAsync = ref.watch(profileSettingsNotifierProvider);
+    final dashboardSummaryAsync = ref.watch(dashboardSummaryProvider);
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkScaffold : AppColors.lightScaffold,
-      appBar: const AppTopNavbar(
-        title: 'Profile',
-        showBack: true,
-      ),
       body: settingsAsync.when(
-        data: (settings) => SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: hPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 16),
-                // Profile Header
-                _buildProfileHeader(context, isDark),
-                const SizedBox(height: 40),
-                
-                // Financial Goals
-                _buildSectionTitle(context, 'Financial Goals', isDark),
-                const SizedBox(height: 16),
-                _buildDailySpendingLimitCard(context, ref, settings, isDark),
-                const SizedBox(height: 16),
-                _buildMonthlySavingsTargetCard(context, ref, settings, isDark),
-                const SizedBox(height: 16),
-                _buildNoSpendStreakCard(context, ref, settings, isDark),
-                const SizedBox(height: 32),
-                
-                // App Settings
-                _buildSectionTitle(context, 'App Settings', isDark),
-                const SizedBox(height: 16),
-                _buildSettingsCard(context, ref, settings, isDark),
-                const SizedBox(height: 32),
-                
-                // Labs (Coming Soon)
-                _buildSectionTitle(context, 'Labs (Coming Soon)', isDark),
-                const SizedBox(height: 16),
-                _buildLabsCard(context, isDark, 
-                  icon: Icons.savings_rounded, 
-                  title: 'Emergency Fund Tracker',
-                ),
-                const SizedBox(height: 12),
-                _buildLabsCard(context, isDark, 
-                  icon: Icons.analytics_rounded, 
-                  title: 'Investment Portfolio',
-                ),
-                const SizedBox(height: 40),
-                
-                // Action Buttons
-                _buildActionButton(
-                  context,
-                  label: 'Export Transactions (CSV)',
-                  icon: Icons.file_upload_outlined,
-                  onPressed: () => _exportTransactionsAsCsv(context, ref),
-                  color: AppColors.primary,
-                  isPrimary: true,
-                ),
-                const SizedBox(height: 12),
-                _buildActionButton(
-                  context,
-                  label: 'Erase All Data',
-                  icon: Icons.delete_outline_rounded,
-                  onPressed: () => _showEraseDataDialog(context, ref),
-                  color: const Color(0xFFFB7185).withOpacity(0.1),
-                  textColor: const Color(0xFFE11D48),
-                  isPrimary: false,
-                ),
-                const SizedBox(height: 48),
-              ],
+        loading: () => CustomScrollView(
+          slivers: [
+            SliverAppTopNavbar(
+              title: 'Profile', 
+              showBack: true,
+              streakDays: dashboardSummaryAsync.asData?.value.streakDays,
             ),
-          ),
+            const SliverFillRemaining(
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ],
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => CustomScrollView(
+          slivers: [
+            SliverAppTopNavbar(
+              title: 'Profile', 
+              showBack: true,
+              streakDays: dashboardSummaryAsync.asData?.value.streakDays,
+            ),
+            SliverFillRemaining(
+              child: Center(child: Text('Error: $err')),
+            ),
+          ],
+        ),
+        data: (settings) => CustomScrollView(
+          slivers: [
+            SliverAppTopNavbar(
+              title: 'Profile',
+              showBack: true,
+              streakDays: dashboardSummaryAsync.asData?.value.streakDays,
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: hPadding),
+              sliver: SliverList(    
+
+                delegate: SliverChildListDelegate([
+                  const SizedBox(height: 16),
+                  // Profile Header
+                  _buildProfileHeader(context, ref, settings, isDark),
+                  const SizedBox(height: 40),
+                  
+                  // Financial Goals
+                  _buildSectionTitle(context, 'Financial Goals', isDark),
+                  const SizedBox(height: 16),
+                  _buildDailySpendingLimitCard(context, ref, settings, isDark),
+                  const SizedBox(height: 16),
+                  _buildMonthlySavingsTargetCard(context, ref, settings, isDark),
+                  const SizedBox(height: 16),
+                  _buildNoSpendStreakCard(context, ref, settings, isDark),
+                  const SizedBox(height: 32),
+                  
+                  // App Settings
+                  _buildSectionTitle(context, 'App Settings', isDark),
+                  const SizedBox(height: 16),
+                  _buildSettingsCard(context, ref, settings, isDark),
+                  const SizedBox(height: 32),
+                  
+                  // Labs (Coming Soon)
+                  _buildSectionTitle(context, 'Labs (Coming Soon)', isDark),
+                  const SizedBox(height: 16),
+                  _buildLabsCard(context, isDark, 
+                    icon: Icons.savings_rounded, 
+                    title: 'Emergency Fund Tracker',
+                  ),
+                  const SizedBox(height: 12),
+                  _buildLabsCard(context, isDark, 
+                    icon: Icons.analytics_rounded, 
+                    title: 'Investment Portfolio',
+                  ),
+                  const SizedBox(height: 40),
+                  
+                  // Action Buttons
+                  _buildActionButton(
+                    context,
+                    label: 'Export Transactions (CSV)',
+                    icon: Icons.file_upload_outlined,
+                    onPressed: () => _exportTransactionsAsCsv(context, ref),
+                    color: AppColors.primary,
+                    isPrimary: true,
+                  ),
+                  const SizedBox(height: 12),
+                  _buildActionButton(
+                    context,
+                    label: 'Erase All Data',
+                    icon: Icons.delete_outline_rounded,
+                    onPressed: () => _showEraseDataDialog(context, ref),
+                    color: const Color(0xFFFB7185).withOpacity(0.1),
+                    textColor: const Color(0xFFE11D48),
+                    isPrimary: false,
+                  ),
+                  const SizedBox(height: 48),
+                ]),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildProfileHeader(BuildContext context, bool isDark) {
+  void _showEditNameDialog(BuildContext context, WidgetRef ref, String currentName) {
+    final controller = TextEditingController(text: currentName);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Name'),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            labelText: 'Your Name',
+            hintText: 'Enter your name',
+          ),
+          autofocus: true,
+          textCapitalization: TextCapitalization.words,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (controller.text.trim().isNotEmpty) {
+                ref.read(profileSettingsNotifierProvider.notifier)
+                    .setUserName(controller.text.trim());
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileHeader(BuildContext context, WidgetRef ref, ProfileSettings settings, bool isDark) {
+    final name = settings.userName;
+    final initials = name.isNotEmpty 
+        ? name.split(' ').map((e) => e[0]).take(2).join('').toUpperCase()
+        : '??';
+
     return Column(
       children: [
         Stack(
@@ -123,7 +190,7 @@ class ProfileScreen extends ConsumerWidget {
               ),
               child: Center(
                 child: Text(
-                  'SM',
+                  initials,
                   style: AppTextStyles.headlineMedium(context).copyWith(
                     color: AppColors.primaryDark,
                     fontWeight: FontWeight.w800,
@@ -143,10 +210,28 @@ class ProfileScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        Text(
-          'Soham',
-          style: AppTextStyles.headlineMedium(context).copyWith(
-            fontWeight: FontWeight.w700,
+        InkWell(
+          onTap: () => _showEditNameDialog(context, ref, name),
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  name,
+                  style: AppTextStyles.headlineMedium(context).copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.edit_rounded,
+                  size: 18,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                ),
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 8),

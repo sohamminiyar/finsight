@@ -8,6 +8,7 @@ import 'widgets/donut_spending_breakdown.dart';
 import 'widgets/highest_category_alert.dart';
 import 'widgets/monthly_category_comparison.dart';
 import 'widgets/smart_tip_box.dart';
+import '../../dashboard/providers/dashboard_provider.dart';
 
 class InsightsScreen extends ConsumerWidget {
   const InsightsScreen({super.key});
@@ -16,70 +17,98 @@ class InsightsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final insightsAsync = ref.watch(insightsSummaryProvider);
+    // Add dashboard summary to get the streak days for the shared navbar
+    final dashboardSummaryAsync = ref.watch(dashboardSummaryProvider);
 
     return Scaffold(
-      appBar: const AppTopNavbar(
-        title: 'Insights',
-      ),
       body: insightsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        loading: () => const CustomScrollView(
+          slivers: [
+            SliverAppTopNavbar(title: 'Insights'),
+            SliverFillRemaining(
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ],
+        ),
+        error: (err, stack) => CustomScrollView(
+          slivers: [
+            SliverAppTopNavbar(title: 'Insights'),
+            SliverFillRemaining(
+              child: Center(child: Text('Error: $err')),
+            ),
+          ],
+        ),
         data: (summary) {
           if (summary.totalSpending <= 0) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.insights_rounded,
-                      size: 80,
-                      color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'No data for insights yet',
-                      style: AppTextStyles.headlineSmall(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Your financial pulse will beat here once you start tracking your spending.',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.bodySmall(context).copyWith(
-                        color: isDark ? AppColors.darkTextSecondary.withValues(alpha: 0.5) : AppColors.lightTextSecondary.withValues(alpha: 0.5),
-                      ),
-                    ),
-                  ],
+            return CustomScrollView(
+              slivers: [
+                SliverAppTopNavbar(
+                  title: 'Insights',
+                  streakDays: dashboardSummaryAsync.asData?.value.streakDays,
                 ),
-              ),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.insights_rounded,
+                          size: 80,
+                          color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05),
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          'No data for insights yet',
+                          style: AppTextStyles.headlineSmall(context).copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Your financial pulse will beat here once you start tracking your spending.',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.bodySmall(context).copyWith(
+                            color: isDark ? AppColors.darkTextSecondary.withValues(alpha: 0.5) : AppColors.lightTextSecondary.withValues(alpha: 0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             );
           }
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Centered Page Header
-                const SizedBox(height: 8),
-                _buildPulseHeader(context),
-                const SizedBox(height: 32),
-                DonutSpendingBreakdown(summary: summary),
-                const SizedBox(height: 32),
-                if (summary.highestCategory != null)
-                  HighestCategoryAlert(category: summary.highestCategory!),
-                const SizedBox(height: 32),
-                MonthlyCategoryComparison(comparisons: summary.comparisons),
-                const SizedBox(height: 32),
-                SmartTipBox(
-                  tip: summary.smartTip,
+          return CustomScrollView(
+            slivers: [
+              SliverAppTopNavbar(
+                title: 'Insights',
+                streakDays: dashboardSummaryAsync.asData?.value.streakDays,
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    const SizedBox(height: 8),
+                    _buildPulseHeader(context),
+                    const SizedBox(height: 32),
+                    DonutSpendingBreakdown(summary: summary),
+                    const SizedBox(height: 32),
+                    if (summary.highestCategory != null)
+                      HighestCategoryAlert(category: summary.highestCategory!),
+                    const SizedBox(height: 32),
+                    MonthlyCategoryComparison(comparisons: summary.comparisons),
+                    const SizedBox(height: 32),
+                    SmartTipBox(
+                      tip: summary.smartTip,
+                    ),
+                    const SizedBox(height: 100), // Additional padding for bottom nav
+                  ]),
                 ),
-                const SizedBox(height: 100), // Additional padding for bottom nav
-              ],
-            ),
+              ),
+            ],
           );
         },
       ),
