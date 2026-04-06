@@ -2,7 +2,7 @@
 
 ## 🚀 Live Demo (APK)
 
-> **📥 Download & Install:** [[https://drive.google.com/drive/folders/1PKwy-NNBk2pP8_fH0qem-ykTrj_j8l5G?usp=sharing]](#)
+> **📥 Download & Install:** [https://drive.google.com/drive/folders/1PKwy-NNBk2pP8_fH0qem-ykTrj_j8l5G?usp=sharing](#)
 
 ---
 
