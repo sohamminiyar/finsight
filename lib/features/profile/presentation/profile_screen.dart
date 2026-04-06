@@ -642,7 +642,11 @@ class ProfileScreen extends ConsumerWidget {
             context,
             icon: Icons.fingerprint_rounded,
             title: 'Biometric Lock',
-            trailing: Switch.adaptive(value: settings.isBiometricEnabled, onChanged: (v) {}),
+            isEnabled: false,
+            trailing: Switch.adaptive(
+              value: false, 
+              onChanged: null,
+            ),
           ),
         ],
       ),
@@ -848,7 +852,15 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSettingsRow(BuildContext context, {required IconData icon, required String title, required Widget trailing}) {
+  Widget _buildSettingsRow(BuildContext context, {
+    required IconData icon, 
+    required String title, 
+    required Widget trailing,
+    bool isEnabled = true,
+  }) {
+    final color = isEnabled ? AppColors.primaryDark : Colors.grey;
+    final bgColor = isEnabled ? AppColors.primary.withOpacity(0.1) : Colors.grey.withOpacity(0.1);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Row(
@@ -856,16 +868,19 @@ class ProfileScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: bgColor,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: AppColors.primaryDark, size: 20),
+            child: Icon(icon, color: color, size: 20),
           ),
           const SizedBox(width: 16),
           Expanded(
             child: Text(
               title,
-              style: AppTextStyles.bodyLarge(context).copyWith(fontWeight: FontWeight.w500),
+              style: AppTextStyles.bodyLarge(context).copyWith(
+                fontWeight: FontWeight.w500,
+                color: isEnabled ? null : Colors.grey,
+              ),
             ),
           ),
           trailing,

@@ -1,128 +1,99 @@
-# Flow - Personal Finance Companion
- 
-**Platform:** Flutter (iOS & Android)
+# 💧 Finsight - Personal Finance Companion
 
-## Project Overview
+## 🚀 Live Demo (APK)
 
-Flow is a lightweight, privacy-focused, offline-first personal finance companion application. It is designed to help users track daily transactions, visualize spending patterns, and build better financial habits through a simple streak-based goal system. 
+> **📥 Download & Install:** [[Insert Google Drive APK Link Here]](#)
 
-Unlike heavy corporate banking apps, Flow relies entirely on local device storage, ensuring lightning-fast performance, zero network latency, and complete data privacy.
+---
 
-## Core Technologies
+## 📖 Project Overview
 
-* **Framework:** Flutter (SDK 3.35.4 / Dart 3.9.2)
-* **Architecture:** Feature-First (Domain-Driven Design concepts)
-* **State Management:** `flutter_riverpod` (v2.x with Code Generation)
-* **Local Database:** `sqflite` (SQLite)
-* **Routing:** `go_router` (using `StatefulShellRoute` for bottom navigation)
-* **Data Visualization:** `fl_chart`
-* **Model Generation:** `freezed` & `json_serializable`
+**Finsight** is a privacy-focused, offline-first personal finance application designed to help users track transactions, visualize spending, and build confident financial habits. Engineered without the latency, complex setup, or privacy concerns of a cloud backend, Finsight delivers an instant, highly responsive user experience by processing all data directly on the device.
 
-## User Workflows & Features
+---
 
-* **Initialization (The Magic Seed):** On the first launch, the app bypasses empty states by injecting 30 days of realistic mock transactions into the local SQLite database.
-* **Mock Auth / Secure Lock:** A simulated biometric/PIN lock screen demonstrating privacy-first access before routing to the main dashboard.
-* **Home Dashboard:** Displays the current balance, total income/expenses for the month, a 7-day spending trend line chart, and recent transaction history.
-* **No-Spend Streak Tracker:** A gamified feature that calculates days without logged expenses, displaying a glowing flame icon and streak count on the dashboard.
-* **Transaction Management:** Full CRUD capabilities for financial entries, featuring a highly polished, touch-friendly input form and a chronologically grouped history list with swipe-to-delete functionality.
-* **Insights & Analytics:** Visual breakdowns of spending habits, including a category pie chart and a week-over-week comparison metric.
+## ✨ Core Features
 
-## UI/UX & Theming (Airy & Dark Design System)
+*   **Offline-First Architecture:** Powered by `sqflite` for instant, network-free data access and uncompromised user privacy.
+*   **The 'Magic Seed' Initialization:** Automatically injects 30 days of realistic mock data on the app's first launch, providing a seamless and immediate evaluation experience for reviewers.
+*   **Stateless Smart Alert Engine:** Dynamically generates contextual alerts (e.g., Daily Limit Exceeded, 50% Milestone) based on real-time Riverpod state evaluation, accessible via an interactive notification bell.
+*   **Interactive Streak Tracking:** A gamified 'No-Spend' streak system to encourage daily saving habits, complete with a contextual drop-down popover for daily budget insights.
+*   **Goal Tracking:** A visual, glowing radial progress ring that elegantly tracks monthly savings targets.
+*   **Dynamic Theming:** Seamless Light and Dark mode user experiences with modern aesthetics.
 
-The app utilizes a custom `ThemeData` configuration supporting both Light and Dark modes.
+---
 
-* **Primary Accent:** Sky Blue (`#38BDF8`)
-* **Income Color:** Soft Mint Green (`#34D399`)
-* **Expense Color:** Soft Rose (`#FB7185`)
-* **Typography:** Inter (via `google_fonts`)
-* **Light Mode:** Slate White (`#F8FAFC`) scaffold background with Pure White (`#FFFFFF`) floating cards.
-* **Dark Mode:** Deep Charcoal (`#0F172A`) scaffold background with Blue-Grey (`#1E293B`) cards.
+## 🛠️ Technical Stack
 
-## Complete Folder Structure
+*   **Framework:** Flutter (Dart 3)
+*   **State Management:** Riverpod 2.x (Code Generation with `riverpod_generator`)
+*   **Local Database:** `sqflite`
+*   **Navigation:** `go_router` (utilizing `StatefulShellRoute` for robust bottom-navigation)
+*   **Visualizations:** `fl_chart` & `percent_indicator`
+*   **Code Generation:** `freezed` & `json_serializable`
+
+---
+
+## 📂 Folder Structure
+
+The application is built using a highly scalable and decoupled **Feature-First** architecture.
 
 ```text
 lib/
-├── main.dart
-├── core/
-│   ├── database/
-│   │   ├── app_database.dart
-│   │   ├── database_tables.dart
-│   │   └── database_seeder.dart
-│   ├── theme/
-│   │   ├── app_colors.dart
-│   │   ├── app_text_styles.dart
-│   │   └── app_theme.dart
-│   ├── router/
-│   │   └── app_router.dart
-│   └── utils/
-│       ├── currency_formatter.dart
-│       ├── date_formatter.dart
-│       └── icon_mapper.dart
-├── shared/
-│   └── widgets/
-│       ├── app_button.dart
-│       ├── app_text_field.dart
-│       ├── empty_state_widget.dart
-│       ├── async_value_widget.dart
-│       └── scaffold_with_nav_bar.dart
-└── features/
-    ├── auth/
-    │   ├── presentation/
-    │   │   └── lock_screen.dart
-    │   └── providers/
-    │       └── auth_provider.dart
-    ├── dashboard/
-    │   ├── presentation/
-    │   │   ├── dashboard_screen.dart
-    │   │   └── widgets/
-    │   │       ├── balance_header_card.dart
-    │   │       ├── summary_cards_row.dart
-    │   │       ├── spending_line_chart.dart
-    │   │       ├── recent_transactions_list.dart
-    │   │       └── streak_widget.dart
-    │   └── providers/
-    │       └── dashboard_provider.dart
-    ├── transactions/
-    │   ├── domain/
-    │   │   ├── models/
-    │   │   │   ├── transaction_model.dart
-    │   │   │   └── category_model.dart
-    │   │   ├── enums/
-    │   │   │   └── transaction_type.dart
-    │   │   └── repositories/
-    │   │       └── i_transaction_repository.dart
-    │   ├── data/
-    │   │   └── repositories/
-    │   │       └── sqlite_transaction_repository.dart
-    │   ├── providers/
-    │   │   ├── transaction_providers.dart
-    │   │   └── category_providers.dart
-    │   └── presentation/
-    │       ├── transaction_list_screen.dart
-    │       ├── add_edit_transaction_screen.dart
-    │       └── widgets/
-    │           ├── transaction_list_item.dart
-    │           └── category_chip.dart
-    └── insights/
-        ├── presentation/
-        │   ├── insights_screen.dart
-        │   └── widgets/
-        │       ├── category_pie_chart.dart
-        │       ├── weekly_comparison_bar.dart
-        │       └── highest_category_card.dart
-        └── providers/
-            └── insights_provider.dart
+├── core/                   # App-wide configurations, themes, constants, routing
+│   ├── database/           # SQLite initialization and tables
+│   ├── router/             # GoRouter configuration
+│   ├── theme/              # AppColors, TextStyles, and Themes
+│   └── utils/              # Global utilities
+├── features/               # Independent feature modules
+│   ├── auth/               # Biometric lock placeholder
+│   ├── dashboard/          # Dashboard screen, widgets, and state
+│   ├── insights/           # Analytics, charts, and financial summaries
+│   ├── profile/            # User settings, preferences, CSV export
+│   └── transactions/       # Transaction repository, providers, listing, and forms
+└── shared/                 # Reusable, cross-feature components
+    └── widgets/            # Navbars, custom inputs, bottom sheets
+```
 
+---
 
-AI Development Guidelines
-During development, strictly adhere to the following rules:
+## Technical Perspectives
 
-Strict Directory Mapping: Do not create new folders outside of this defined architecture. All UI screens must go into their respective features/[name]/presentation/ directories. (If a particular file is missing inside a folder then you can create that & notify the user about the same)
+### Why Local SQLite?
+I purposefully chose a local SQLite architecture over a mocked cloud backend. For an assignment focused on UX and state management, an offline-first approach removes network latency, eliminates API key setup requirements for the evaluator, and perfectly demonstrates efficient local data handling, asynchronous initialization, and robust state management.
 
-State Management: Use modern Riverpod 2.x @riverpod annotations for all providers. Do not use legacy StateNotifier.
+### Seeing Smart Alerts in Action
+The Smart Alert engine evaluates the financial state dynamically without storing alerts in a dedicated database table.
+**How to test:**
+1.  Navigate to the **Profile** tab.
+2.  Set your "Daily Spending Limit" (e.g., `₹500`).
+3.  Go to the **Dashboard** and add a new transaction for `₹600`.
+4.  Tap the notification bell on the Dashboard—you will immediately see the newly evaluated *Daily Limit Exceeded* contextual alert!
 
-Database Injection: The SQLite database initialization is asynchronous. It must be awaited in main.dart and synchronously injected into a Riverpod override appDatabaseProvider.
+---
 
-Theming: Never hardcode colors or text styles in the UI files. Always use Theme.of(context) or the constants defined in core/theme/.
+## 💻 Setup & Run Instructions
 
-UI First, Logic Second: When generating components, build the static visual layout first to ensure it matches the design system, then attach the Riverpod providers and models.
+To run this project locally on your machine, ensure you have the [Flutter SDK installed](https://docs.flutter.dev/get-started/install).
+
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository_url>
+    cd finsight
+    ```
+
+2.  **Fetch dependencies:**
+    ```bash
+    flutter pub get
+    ```
+
+3.  *(Optional but Recommended)* **Run code generation:**
+    If you plan to modify Riverpod providers or Freezed models, ensure the code generator is up to date:
+    ```bash
+    dart run build_runner build -d
+    ```
+
+4.  **Run the application:**
+    ```bash
+    flutter run
+    ```
